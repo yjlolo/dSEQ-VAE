@@ -1,0 +1,10 @@
+core:
+  tags:
+    - mytag
+defaults:
+  - _self_
+  - data: dmel_inst
+  - logging: default
+  - model: Dsae
+  - optim: default
+  - train: default

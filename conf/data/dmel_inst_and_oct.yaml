@@ -1,0 +1,10 @@
+_target_: src.datasets.dataloader.GeneralDataLoader
+datasets:
+  train:
+    _target_: src.datasets.dmel.DMelodies
+    path_to_data: dmelodies_dataset/wav_datasets/C_major-roFilter-vn_tp-3000/train
+  val:
+    _target_: src.datasets.dmel.DMelodies
+    path_to_data: dmelodies_dataset/wav_datasets/C_major-roFilter-vn_tp-3000/val
+num_workers: 0
+batch_size: 128

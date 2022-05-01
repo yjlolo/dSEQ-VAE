@@ -1,0 +1,22 @@
+{
+    "ckpt": "/homes/yl006/projects/dvae-lib/multirun/2022-04-23/09-54-47/2/wandb/run-20220423_095454-3ozpipmh/files/dvae/3ozpipmh/checkpoints/epoch=3998-step=75980.ckpt",
+    "run_id": "3ozpipmh",
+    "note": "rm fix shuffling, test seed 42",
+    "optim": {
+        "amsgrad": true
+    },
+    "params": {
+        "model": "Dsae",
+        "data": "C_4_major-rFilter-vn_tp-3000",
+        "likelihood": "^",
+        "z_feature": "^",
+        "v_condition": false,
+        "z_dim": 32,
+        "v_dim": 16
+    },
+    "swap_n_clfr": {
+        "lda-pre_swap": 0.574063601689307,
+        "lda-gswap": 0.34679139012269405,
+        "lda-lswap": 0.3444664285992235
+    }
+}

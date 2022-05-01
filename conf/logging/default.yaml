@@ -1,0 +1,23 @@
+progress_bar_refresh_rate: 20
+
+wandb:
+  project: dvae
+  entity: null
+  log_model: True
+  mode: 'online'
+
+wandb_watch:
+  log: None
+  log_freq: 100
+
+lr_monitor:
+  logging_interval: "step"
+  log_momentum: False
+
+media_log:
+  log_interval: 300
+  audio: True
+  reconstruction: True
+  generation: True
+  z_swap: True
+  v_project: True

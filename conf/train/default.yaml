@@ -1,0 +1,21 @@
+# reproducibility
+deterministic: True
+random_seed: 42
+
+# training
+pl_trainer:
+  fast_dev_run: False
+  overfit_batches: 0
+  gpus: 1
+  max_epochs: 4000 
+  gradient_clip_val: 0.0
+
+monitor_metric: 'val_loss'
+monitor_metric_mode: 'min'
+
+early_stopping:
+  patience: 300
+  verbose: True 
+
+model_checkpoints:
+  verbose: True

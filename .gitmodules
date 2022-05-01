@@ -1,0 +1,4 @@
+[submodule "data/dmelodies_dataset"]
+	path = data/dmelodies_dataset
+	url = https://github.com/ashispati/dmelodies_dataset
+    ignore = dirty

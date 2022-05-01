@@ -1,0 +1,14 @@
+_target_: src.models.dsae.Dsae
+input_dim: 80
+z_dim: 16
+v_dim: 16
+z_feature: '^'
+v_posterior: '^'
+z_posterior: 'x'
+v_condition: False
+z_prior: '>>'
+likelihood: '^'
+encoder_dims: [64, 64]
+transition_dims: [32, 32]
+decoder_dims: [64, 64]
+nonlin: 'tanh'
