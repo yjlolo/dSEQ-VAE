@@ -286,6 +286,9 @@ class DsaeBase(pl.LightningModule, ABC):
         train_out = outputs[0]
         outputs = outputs[1]
 
+        # Log everything on Wandb with the best ckpt
+        self._epoch_end(outputs, 'test')
+
         # Train LDA with outputs derived from the training set
         y_train = torch.cat([d_i['ground_truth'][:, -1] for d_i in train_out])
         x = torch.cat([d_i['v_mu'] for d_i in train_out])
@@ -296,7 +299,7 @@ class DsaeBase(pl.LightningModule, ABC):
         max_len = int(max(seq_lengths))
         labels = torch.cat([d_i['ground_truth'][:, -1] for d_i in outputs])
 
-        score, k = metric.evaluate_latent_swap(
+        score, _ = metric.evaluate_latent_swap(
             model=self,
             reconstruction=torch.cat(
                 [d_i['reconstruction'] for d_i in outputs]).to(self.device),
@@ -338,7 +341,7 @@ class DsaeBase(pl.LightningModule, ABC):
         print(output_dict)
         orig_cwd = Path(hydra.utils.get_original_cwd())
         fname = "_".join([f"{k}={v}" for k, v in output_dict['params'].items()])
-        fname = orig_cwd / 'scores' / f'{run_id}_{fname}.json'
+        fname = orig_cwd / 'benchmark' / f'{run_id}_{fname}.json'
         with open(fname, 'w', encoding='utf-8') as f:
             json.dump(output_dict, f, ensure_ascii=False, indent=4)
 
@@ -370,19 +373,19 @@ class DsaeBase(pl.LightningModule, ABC):
         # NOTE: put the index -1 to the label only for convenience (instrument)
         labels = torch.cat([d_i['ground_truth'][:, -1] for d_i in outputs])
 
-        if self.hparams.logging.media_log.reconstruction:
+        if self.hparams.logging.media_log.reconstruction or prefix == 'test':
             x_hat = outputs[0]['reconstruction'][0]
             x = outputs[0]['input'][0]
             self._log_reconstruction(x, x_hat, prefix)
 
-        if self.hparams.logging.media_log.v_project:
+        if self.hparams.logging.media_log.v_project or prefix == 'test':
             v = torch.cat([d_i['v'] for d_i in outputs])
             self._log_v_projection(v, labels, prefix)
 
-        if self.hparams.logging.media_log.generation:
+        if self.hparams.logging.media_log.generation or prefix == 'test':
             self._log_generation(1, max_len, prefix)
         
-        if self.hparams.logging.media_log.z_swap:
+        if self.hparams.logging.media_log.z_swap or prefix == 'test':
             v = torch.cat([d_i['v'] for d_i in outputs])
             z_pos = pad_batch(outputs, 'z_pos', max_len)
             try:
