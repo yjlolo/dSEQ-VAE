@@ -3,6 +3,8 @@
 This project aims to provide a framework for unsupervised disentanglement of sequential data,
 and is under active development.
 
+Audio samples can be found in https://yjlolo.github.io/dSEQ-VAE.
+
 ## News
 - (22/5/1) Publish code for the paper *Towards Robust Unsupervised Disentanglement of Sequential Data —
 A Case Study Using Music Audio* accepted to IJCAI-22. Provide the DMelodies dataset and evaluation of the global latent space using LDA.
@@ -15,8 +17,7 @@ We provide the result from running `./scripts/benchmark/run_*.sh` which trains a
 ![](misc/dmel_lda_amsgrad=T.png)
 
 The top and bottom figures correspond to `amsgrad` being `False` and `True`, respectively, and the variance is due to the six random seeds.
-It shows that the proposed TS-DSAE performs the best in terms of learning a semantically meaningful global latent space (i.e. instrument identity), and is robust against the random seeds, optimisers, and hyperparameters. 
-
+It shows that the proposed TS-DSAE performs the best in terms of learning a semantically meaningful global latent space (i.e. instrument identity), and is robust against the random seeds, optimisers, and hyperparameters.
 
 ## Usage
 `source env.sh` to include necessary paths, and `./scripts/run_{model}.sh` with `{model}` replaced with one of the four models `dsae`, `freeze`, `tsdsae_woReg` and `tsdsae`.
@@ -24,6 +25,6 @@ Possible configurations can be found under `conf/`.
 
 ## TODO
 - [x] Upload benchmark results from running `./scripts/benchmark/run_*.sh`
-- [ ] Upload audio samples
+- [x] Upload audio samples for style transfer
 - [ ] Elaborate `README.md`
 - [ ] Publish evaluation code for the local latent using Crepe
