@@ -1,7 +1,6 @@
-# Disentangled SEQuential AutoEncoders
+# Bottleneck-Anchor-Disentangle: A VAE framework
 
-This project aims to provide a framework for unsupervised disentanglement of sequential data,
-and is under active development.
+BAD-VAE is a developing framework for unsupervised disentanglement of sequential data.
 
 Audio samples can be found in https://yjlolo.github.io/dSEQ-VAE.
 
