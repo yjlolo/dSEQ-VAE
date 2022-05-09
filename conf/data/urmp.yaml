@@ -1,0 +1,14 @@
+_target_: src.datasets.dataloader.GeneralDataLoader
+datasets:
+  train:
+    _target_: src.datasets.urmp.Urmp
+    path_to_data: /import/c4dm-datasets/URMP/synth-dataset/4s-dataset/
+    instruments: ['vn', 'tpt']
+    split: 'train'
+  val:
+    _target_: src.datasets.urmp.Urmp
+    path_to_data: /import/c4dm-datasets/URMP/synth-dataset/4s-dataset/
+    instruments: ['vn', 'tpt']
+    split: 'val'
+num_workers: 0
+batch_size: 128
