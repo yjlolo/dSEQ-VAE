@@ -1,0 +1,35 @@
+{
+    "os": "Linux-3.10.0-1160.11.1.el7.x86_64-x86_64-with-glibc2.17",
+    "python": "3.8.2",
+    "heartbeatAt": "2022-05-02T01:19:29.108543",
+    "startedAt": "2022-05-02T01:19:28.213880",
+    "docker": null,
+    "gpu": "NVIDIA RTX A5000",
+    "gpu_count": 8,
+    "cpu_count": 80,
+    "cuda": "9.0.176",
+    "args": [
+        "-m",
+        "hydra/launcher=joblib",
+        "model=TsDsae",
+        "train.random_seed=277",
+        "model.z_dim=8,16,32",
+        "optim.optimizer.amsgrad=True,False",
+        "logging.media_log.reconstruction=False",
+        "logging.media_log.generation=False",
+        "logging.media_log.z_swap=False",
+        "logging.media_log.v_project=False"
+    ],
+    "state": "running",
+    "program": "/homes/yl006/projects/dvae-lib/.venv_torch110/lib/python3.8/site-packages/joblib/externals/loky/backend/popen_loky_posix.py",
+    "codePath": ".venv_torch110/lib/python3.8/site-packages/joblib/externals/loky/backend/popen_loky_posix.py",
+    "git": {
+        "remote": "https://github.com/yjlolo/dvae-lib.git",
+        "commit": "6cc4c7ecf83c89c4e8e13177d9650a3e5d22ae2d"
+    },
+    "email": "yjlolo125@gmail.com",
+    "root": "/homes/yl006/projects/dvae-lib",
+    "host": "wynne",
+    "username": "yl006",
+    "executable": "/homes/yl006/projects/dvae-lib/.venv_torch110/bin/python"
+}

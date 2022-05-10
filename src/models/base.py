@@ -18,6 +18,7 @@ import pytorch_lightning as pl
 import src.metric as metric
 from src.models.modules.audio_synth import GflFromMel
 from src.utils.seq import pad_batch
+from src.utils.util import ensure_dir
 
 
 logger = logging.getLogger(__name__)
@@ -339,10 +340,13 @@ class DsaeBase(pl.LightningModule, ABC):
             'swap_n_clfr': score,
         }
         print(output_dict)
+        dataset = self.hparams.data.datasets.train._target_.split('.')[-1]
         orig_cwd = Path(hydra.utils.get_original_cwd())
         fname = "_".join([f"{k}={v}" for k, v in output_dict['params'].items()])
-        fname = orig_cwd / 'benchmark' / f'{run_id}_{fname}.json'
-        with open(fname, 'w', encoding='utf-8') as f:
+        fname = f'{run_id}_{fname}.json'
+        tgt_dir = orig_cwd / 'benchmark' / dataset
+        ensure_dir(tgt_dir)
+        with open(tgt_dir / fname, 'w', encoding='utf-8') as f:
             json.dump(output_dict, f, ensure_ascii=False, indent=4)
 
     def _run_step(self, batch, prefix):

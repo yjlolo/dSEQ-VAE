@@ -1,0 +1,747 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.9
+    code_path: code/.venv_torch110/lib/python3.8/site-packages/joblib/externals/loky/backend/popen_loky_posix.py
+    framework: lightning
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    m:
+    - 1: trainer/global_step
+      6:
+      - 3
+    - 1: val_loss
+      5: 1
+      6:
+      - 1
+    - 1: val_recon_loss
+      5: 1
+      6:
+      - 1
+    - 1: val_kld_z
+      5: 1
+      6:
+      - 1
+    - 1: val_kld_v
+      5: 1
+      6:
+      - 1
+    - 1: val_kld_v_gswap
+      5: 1
+      6:
+      - 1
+    - 1: val_kld_z_gswap
+      5: 1
+      6:
+      - 1
+    - 1: val_kld_v_lswap
+      5: 1
+      6:
+      - 1
+    - 1: val_kld_z_lswap
+      5: 1
+      6:
+      - 1
+    - 1: epoch
+      5: 1
+      6:
+      - 1
+    - 1: train_loss
+      5: 1
+      6:
+      - 1
+    - 1: train_recon_loss
+      5: 1
+      6:
+      - 1
+    - 1: train_kld_z
+      5: 1
+      6:
+      - 1
+    - 1: train_kld_v
+      5: 1
+      6:
+      - 1
+    - 1: train_kld_v_gswap
+      5: 1
+      6:
+      - 1
+    - 1: train_kld_z_gswap
+      5: 1
+      6:
+      - 1
+    - 1: train_kld_v_lswap
+      5: 1
+      6:
+      - 1
+    - 1: train_kld_z_lswap
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder_mu\.0\.bias._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder_mu\.0\.bias.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder_mu\.0\.bias.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder_mu\.0\.weight._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder_mu\.0\.weight.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder_mu\.0\.weight.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.2\.bias._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.2\.bias.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.2\.bias.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.2\.weight._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.2\.weight.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.2\.weight.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.0\.bias._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.0\.bias.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.0\.bias.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.0\.weight._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.0\.weight.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_decoder\.layers\.0\.weight.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_logvar\.bias._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_logvar\.bias.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_logvar\.bias.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_logvar\.weight._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_logvar\.weight.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_logvar\.weight.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_mu\.bias._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_mu\.bias.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_mu\.bias.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_mu\.weight._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_mu\.weight.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_mu\.weight.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.2\.bias._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.2\.bias.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.2\.bias.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.2\.weight._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.2\.weight.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.2\.weight.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.0\.bias._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.0\.bias.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.0\.bias.bins
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.0\.weight._type
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.0\.weight.values
+      5: 1
+      6:
+      - 1
+    - 1: gradients/net_v_encoder\.layers\.0\.weight.bins
+      5: 1
+      6:
+      - 1
+    - 1: test_reconstruction._type
+      5: 1
+      6:
+      - 1
+    - 1: test_reconstruction.path
+      5: 1
+      6:
+      - 1
+    - 1: test_reconstruction.sha256
+      5: 1
+      6:
+      - 1
+    - 1: test_reconstruction.size
+      5: 1
+      6:
+      - 1
+    - 1: test_reconstruction.format
+      5: 1
+      6:
+      - 1
+    - 1: test_reconstruction.width
+      5: 1
+      6:
+      - 1
+    - 1: test_reconstruction.height
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-recon._type
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-recon.path
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-recon.sha256
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-recon.size
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-recon.caption
+      5: 1
+      6:
+      - 1
+    - 1: test_latent_projection._type
+      5: 1
+      6:
+      - 1
+    - 1: test_latent_projection.path
+      5: 1
+      6:
+      - 1
+    - 1: test_latent_projection.sha256
+      5: 1
+      6:
+      - 1
+    - 1: test_latent_projection.size
+      5: 1
+      6:
+      - 1
+    - 1: test_generation._type
+      5: 1
+      6:
+      - 1
+    - 1: test_generation.path
+      5: 1
+      6:
+      - 1
+    - 1: test_generation.sha256
+      5: 1
+      6:
+      - 1
+    - 1: test_generation.size
+      5: 1
+      6:
+      - 1
+    - 1: test_generation.format
+      5: 1
+      6:
+      - 1
+    - 1: test_generation.width
+      5: 1
+      6:
+      - 1
+    - 1: test_generation.height
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-generation._type
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-generation.path
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-generation.sha256
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-generation.size
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-generation.caption
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source._type
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source.path
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source.sha256
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source.size
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source.caption
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source_swap._type
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source_swap.path
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source_swap.sha256
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source_swap.size
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-source_swap.caption
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target_swap._type
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target_swap.path
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target_swap.sha256
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target_swap.size
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target_swap.caption
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target._type
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target.path
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target.sha256
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target.size
+      5: 1
+      6:
+      - 1
+    - 1: audio/test-target.caption
+      5: 1
+      6:
+      - 1
+    - 1: test_local_swap._type
+      5: 1
+      6:
+      - 1
+    - 1: test_local_swap.path
+      5: 1
+      6:
+      - 1
+    - 1: test_local_swap.sha256
+      5: 1
+      6:
+      - 1
+    - 1: test_local_swap.size
+      5: 1
+      6:
+      - 1
+    - 1: test_local_swap.format
+      5: 1
+      6:
+      - 1
+    - 1: test_local_swap.width
+      5: 1
+      6:
+      - 1
+    - 1: test_local_swap.height
+      5: 1
+      6:
+      - 1
+    - 1: test_loss/dataloader_idx_1
+      5: 1
+      6:
+      - 1
+    - 1: test_recon_loss/dataloader_idx_1
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_z/dataloader_idx_1
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_v/dataloader_idx_1
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_v_gswap/dataloader_idx_1
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_z_gswap/dataloader_idx_1
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_v_lswap/dataloader_idx_1
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_z_lswap/dataloader_idx_1
+      5: 1
+      6:
+      - 1
+    - 1: test_loss/dataloader_idx_0
+      5: 1
+      6:
+      - 1
+    - 1: test_recon_loss/dataloader_idx_0
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_z/dataloader_idx_0
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_v/dataloader_idx_0
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_v_gswap/dataloader_idx_0
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_z_gswap/dataloader_idx_0
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_v_lswap/dataloader_idx_0
+      5: 1
+      6:
+      - 1
+    - 1: test_kld_z_lswap/dataloader_idx_0
+      5: 1
+      6:
+      - 1
+    python_version: 3.8.2
+    start_time: 1651420287
+    t:
+      1:
+      - 1
+      - 5
+      - 9
+      2:
+      - 1
+      - 5
+      - 9
+      3:
+      - 1
+      - 2
+      - 7
+      4: 3.8.2
+      5: 0.12.9
+      8:
+      - 8
+      - 9
+core/tags:
+  desc: null
+  value:
+  - mytag
+data/_target_:
+  desc: null
+  value: src.datasets.dataloader.GeneralDataLoader
+data/batch_size:
+  desc: null
+  value: 128
+data/datasets/train/_target_:
+  desc: null
+  value: src.datasets.dmel.DMelodies
+data/datasets/train/path_to_data:
+  desc: null
+  value: dmelodies_dataset/wav_datasets/C_4_major-rFilter-vn_tp-3000/train
+data/datasets/val/_target_:
+  desc: null
+  value: src.datasets.dmel.DMelodies
+data/datasets/val/path_to_data:
+  desc: null
+  value: dmelodies_dataset/wav_datasets/C_4_major-rFilter-vn_tp-3000/val
+data/num_workers:
+  desc: null
+  value: 0
+logging/lr_monitor/log_momentum:
+  desc: null
+  value: false
+logging/lr_monitor/logging_interval:
+  desc: null
+  value: step
+logging/media_log/audio:
+  desc: null
+  value: true
+logging/media_log/generation:
+  desc: null
+  value: false
+logging/media_log/log_interval:
+  desc: null
+  value: 300
+logging/media_log/reconstruction:
+  desc: null
+  value: false
+logging/media_log/v_project:
+  desc: null
+  value: false
+logging/media_log/z_swap:
+  desc: null
+  value: false
+logging/progress_bar_refresh_rate:
+  desc: null
+  value: 20
+logging/wandb/entity:
+  desc: null
+  value: None
+logging/wandb/log_model:
+  desc: null
+  value: true
+logging/wandb/mode:
+  desc: null
+  value: online
+logging/wandb/project:
+  desc: null
+  value: dvae
+logging/wandb_watch/log:
+  desc: null
+  value: None
+logging/wandb_watch/log_freq:
+  desc: null
+  value: 100
+model/C:
+  desc: null
+  value: 300
+model/_target_:
+  desc: null
+  value: src.models.ts_dsae.TsDsae
+model/decoder_dims:
+  desc: null
+  value:
+  - 64
+  - 64
+model/encoder_dims:
+  desc: null
+  value:
+  - 64
+  - 64
+model/input_dim:
+  desc: null
+  value: 80
+model/likelihood:
+  desc: null
+  value: ^
+model/nonlin:
+  desc: null
+  value: tanh
+model/reg_weights:
+  desc: null
+  value:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+model/transition_dims:
+  desc: null
+  value:
+  - 32
+  - 32
+model/v_condition:
+  desc: null
+  value: false
+model/v_dim:
+  desc: null
+  value: 16
+model/v_posterior:
+  desc: null
+  value: ^
+model/z_dim:
+  desc: null
+  value: 32
+model/z_feature:
+  desc: null
+  value: ^
+model/z_posterior:
+  desc: null
+  value: x
+model/z_prior:
+  desc: null
+  value: '>>'
+optim/optimizer/_target_:
+  desc: null
+  value: torch.optim.Adam
+optim/optimizer/amsgrad:
+  desc: null
+  value: false
+optim/optimizer/betas:
+  desc: null
+  value:
+  - 0.9
+  - 0.999
+optim/optimizer/eps:
+  desc: null
+  value: 1.0e-08
+optim/optimizer/lr:
+  desc: null
+  value: 0.001
+optim/optimizer/weight_decay:
+  desc: null
+  value: 0
+stats/params_not_trainable:
+  desc: null
+  value: 32512
+stats/params_total:
+  desc: null
+  value: 56432
+stats/params_trainable:
+  desc: null
+  value: 23920
+train/deterministic:
+  desc: null
+  value: true
+train/early_stopping/patience:
+  desc: null
+  value: 300
+train/early_stopping/verbose:
+  desc: null
+  value: true
+train/model_checkpoints/verbose:
+  desc: null
+  value: true
+train/monitor_metric:
+  desc: null
+  value: val_loss
+train/monitor_metric_mode:
+  desc: null
+  value: min
+train/pl_trainer/fast_dev_run:
+  desc: null
+  value: false
+train/pl_trainer/gpus:
+  desc: null
+  value: 1
+train/pl_trainer/gradient_clip_val:
+  desc: null
+  value: 0.0
+train/pl_trainer/max_epochs:
+  desc: null
+  value: 4000
+train/pl_trainer/overfit_batches:
+  desc: null
+  value: 0
+train/random_seed:
+  desc: null
+  value: 736

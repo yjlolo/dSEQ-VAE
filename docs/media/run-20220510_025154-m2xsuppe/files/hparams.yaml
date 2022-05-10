@@ -1,0 +1,95 @@
+core:
+  tags:
+  - mytag
+data:
+  _target_: src.datasets.dataloader.GeneralDataLoader
+  datasets:
+    train:
+      _target_: src.datasets.urmp.Urmp
+      path_to_data: /import/c4dm-datasets/URMP/synth-dataset/4s-dataset/
+      instruments:
+      - vn
+      - tpt
+      split: train
+    val:
+      _target_: src.datasets.urmp.Urmp
+      path_to_data: /import/c4dm-datasets/URMP/synth-dataset/4s-dataset/
+      instruments:
+      - vn
+      - tpt
+      split: val
+  num_workers: 0
+  batch_size: 128
+logging:
+  progress_bar_refresh_rate: 20
+  wandb:
+    project: dvae
+    entity: null
+    log_model: true
+    mode: online
+  wandb_watch:
+    log: None
+    log_freq: 100
+  lr_monitor:
+    logging_interval: step
+    log_momentum: false
+  media_log:
+    log_interval: 300
+    audio: true
+    reconstruction: false
+    generation: false
+    z_swap: false
+    v_project: false
+model:
+  _target_: src.models.ts_dsae.TsDsae
+  input_dim: 80
+  z_dim: 32
+  v_dim: 16
+  z_feature: ^
+  v_posterior: ^
+  z_posterior: x
+  v_condition: false
+  z_prior: '>>'
+  likelihood: ^
+  encoder_dims:
+  - 64
+  - 64
+  transition_dims:
+  - 32
+  - 32
+  decoder_dims:
+  - 64
+  - 64
+  nonlin: tanh
+  C: 300
+  reg_weights:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+optim:
+  optimizer:
+    _target_: torch.optim.Adam
+    lr: 0.001
+    betas:
+    - 0.9
+    - 0.999
+    eps: 1.0e-08
+    weight_decay: 0
+    amsgrad: false
+train:
+  deterministic: true
+  random_seed: 172
+  pl_trainer:
+    fast_dev_run: false
+    overfit_batches: 0
+    gpus: 1
+    max_epochs: 4000
+    gradient_clip_val: 0.0
+  monitor_metric: val_loss
+  monitor_metric_mode: min
+  early_stopping:
+    patience: 300
+    verbose: true
+  model_checkpoints:
+    verbose: true

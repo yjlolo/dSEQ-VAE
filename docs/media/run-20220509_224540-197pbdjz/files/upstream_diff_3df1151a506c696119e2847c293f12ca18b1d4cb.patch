@@ -1,0 +1,378 @@
+diff --git a/README.md b/README.md
+index 9418550..e7f90cb 100644
+--- a/README.md
++++ b/README.md
+@@ -1,7 +1,6 @@
+-# Disentangled SEQuential AutoEncoders
++# Bottleneck-Anchor-Disentangle: A VAE framework
+ 
+-This project aims to provide a framework for unsupervised disentanglement of sequential data,
+-and is under active development.
++BAD-VAE is a developing framework for unsupervised disentanglement of sequential data.
+ 
+ Audio samples can be found in https://yjlolo.github.io/dSEQ-VAE.
+ 
+diff --git a/conf/data/urmp.yaml b/conf/data/urmp.yaml
+new file mode 100644
+index 0000000..f449adf
+--- /dev/null
++++ b/conf/data/urmp.yaml
+@@ -0,0 +1,14 @@
++_target_: src.datasets.dataloader.GeneralDataLoader
++datasets:
++  train:
++    _target_: src.datasets.urmp.Urmp
++    path_to_data: /import/c4dm-datasets/URMP/synth-dataset/4s-dataset/
++    instruments: ['vn', 'tpt']
++    split: 'train'
++  val:
++    _target_: src.datasets.urmp.Urmp
++    path_to_data: /import/c4dm-datasets/URMP/synth-dataset/4s-dataset/
++    instruments: ['vn', 'tpt']
++    split: 'val'
++num_workers: 0
++batch_size: 128
+\ No newline at end of file
+diff --git a/scripts/benchmark/run_dsae.sh b/scripts/benchmark/run_dsae.sh
+deleted file mode 100755
+index 758f912..0000000
+--- a/scripts/benchmark/run_dsae.sh
++++ /dev/null
+@@ -1,29 +0,0 @@
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    train.random_seed=831,277 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    train.random_seed=736,8 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    train.random_seed=172,828 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+\ No newline at end of file
+diff --git a/scripts/benchmark/run_freeze.sh b/scripts/benchmark/run_freeze.sh
+deleted file mode 100755
+index 4397e43..0000000
+--- a/scripts/benchmark/run_freeze.sh
++++ /dev/null
+@@ -1,32 +0,0 @@
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=FreezeDsae \
+-    train.random_seed=831,277 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=FreezeDsae \
+-    train.random_seed=736,8 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=FreezeDsae \
+-    train.random_seed=172,828 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+\ No newline at end of file
+diff --git a/scripts/benchmark/run_tsdsae.sh b/scripts/benchmark/run_tsdsae.sh
+deleted file mode 100755
+index f836098..0000000
+--- a/scripts/benchmark/run_tsdsae.sh
++++ /dev/null
+@@ -1,65 +0,0 @@
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=831 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=736 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=172 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=277 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=8 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=828 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+\ No newline at end of file
+diff --git a/scripts/benchmark/run_tsdsae_woReg.sh b/scripts/benchmark/run_tsdsae_woReg.sh
+deleted file mode 100755
+index a32f070..0000000
+--- a/scripts/benchmark/run_tsdsae_woReg.sh
++++ /dev/null
+@@ -1,71 +0,0 @@
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=831 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    model.reg_weights=[0,0,0,0] \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=736 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    model.reg_weights=[0,0,0,0] \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=172 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    model.reg_weights=[0,0,0,0] \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=277 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    model.reg_weights=[0,0,0,0] \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=8 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    model.reg_weights=[0,0,0,0] \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+-
+-python train.py -m \
+-    hydra/launcher=joblib \
+-    model=TsDsae \
+-    train.random_seed=828 \
+-    model.z_dim=8,16,32 \
+-    optim.optimizer.amsgrad=True,False \
+-    model.reg_weights=[0,0,0,0] \
+-    logging.media_log.reconstruction=False \
+-    logging.media_log.generation=False \
+-    logging.media_log.z_swap=False \
+-    logging.media_log.v_project=False \
+\ No newline at end of file
+diff --git a/src/datasets/constants/urmp.py b/src/datasets/constants/urmp.py
+new file mode 100644
+index 0000000..a9e8c5e
+--- /dev/null
++++ b/src/datasets/constants/urmp.py
+@@ -0,0 +1,19 @@
++SR = 16000 
++NFFT = 2048
++HOP = 256
++NMEL = 80
++SEQ_LEN = int((4 * SR) / HOP)
++
++INSTRUMENTS = (
++    "vn",
++    "fl",
++    "tpt",
++    "cl",
++    "sax"
++)
++
++DICT_INST_TO_IDX = {
++    instrument: n for n, instrument in enumerate(INSTRUMENTS)
++}
++
++DICT_IDX_TO_INST = {v: k for k, v in DICT_INST_TO_IDX.items()}
+diff --git a/src/datasets/urmp.py b/src/datasets/urmp.py
+new file mode 100644
+index 0000000..aed993e
+--- /dev/null
++++ b/src/datasets/urmp.py
+@@ -0,0 +1,59 @@
++from pathlib import Path
++from typing import List
++
++import numpy as np
++import torch
++import torch.nn as nn
++from torch.utils.data import Dataset
++from torchvision import transforms
++from torchaudio.transforms import MelSpectrogram
++
++from src.datasets.constants.urmp import *
++from src.datasets.preprocessor import LogCompress, TakeExp
++
++TRANSFORM = transforms.Compose([
++    MelSpectrogram(sample_rate=SR, n_fft=NFFT, hop_length=HOP, n_mels=NMEL),
++    LogCompress(),
++])
++OUTPUT_DENORM = TakeExp()
++OUTPUT_ACT = nn.Identity()
++
++
++class Urmp(Dataset):
++    def __init__(
++        self,
++        path_to_data: str,
++        instruments: List[str],
++        split: str
++    ):
++        path_to_data = Path(path_to_data)
++        assert path_to_data.exists
++
++        audio_path = []
++        audio_files = []
++        labels = []
++        for instrument in instruments:
++            instrument_split_dir = path_to_data / instrument / split / 'audio'
++            print(f"Allocating samples from {instrument_split_dir} ...")
++            samples = list(instrument_split_dir.glob('*.npy'))
++            print(f"Found {len(samples)} <{instrument}> samples!")
++            for fpath in samples:
++                audio_files.append(
++                    TRANSFORM(torch.FloatTensor(np.load(str(fpath))))
++                )
++                instrument_label = DICT_INST_TO_IDX[fpath.stem.split('_')[3]]
++                labels.append(np.array([instrument_label]))
++                audio_path.append(fpath)
++
++        self.audio_files = audio_files
++        self.audio_path = audio_path
++        self.labels = labels
++
++    def __len__(self):
++        return len(self.audio_files)
++
++    def __getitem__(self, idx):
++        y = self.labels[idx]
++        x = self.audio_files[idx]
++
++        return idx, x.transpose(0, -1), x.size(-1), y
+diff --git a/src/models/base.py b/src/models/base.py
+index 76d832e..39eeb8d 100644
+--- a/src/models/base.py
++++ b/src/models/base.py
+@@ -18,6 +18,7 @@ import pytorch_lightning as pl
+ import src.metric as metric
+ from src.models.modules.audio_synth import GflFromMel
+ from src.utils.seq import pad_batch
++from src.utils.util import ensure_dir
+ 
+ 
+ logger = logging.getLogger(__name__)
+@@ -339,10 +340,13 @@ class DsaeBase(pl.LightningModule, ABC):
+             'swap_n_clfr': score,
+         }
+         print(output_dict)
++        dataset = self.hparams.data.datasets.train._target_.split('.')[-1]
+         orig_cwd = Path(hydra.utils.get_original_cwd())
+         fname = "_".join([f"{k}={v}" for k, v in output_dict['params'].items()])
+-        fname = orig_cwd / 'benchmark' / f'{run_id}_{fname}.json'
+-        with open(fname, 'w', encoding='utf-8') as f:
++        fname = f'{run_id}_{fname}.json'
++        tgt_dir = orig_cwd / 'benchmark' / dataset
++        ensure_dir(tgt_dir)
++        with open(tgt_dir / fname, 'w', encoding='utf-8') as f:
+             json.dump(output_dict, f, ensure_ascii=False, indent=4)
+ 
+     def _run_step(self, batch, prefix):
