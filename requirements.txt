@@ -15,3 +15,6 @@ torch==1.10.1+cu111
 torchaudio==0.10.0+cu111
 torchvision==0.11.0+cu111
 tqdm==4.62.3
+wandb==0.12.9
+SoundFile==0.10.3.post1
+plotly==5.1.0
