@@ -40,10 +40,7 @@ git clone https://github.com/yjlolo/dSEQ-VAE.git --recurse-submodules
 pip install -r requirements.txt
 ```
 
-`cd data/dmelodies_dataset` and `git lfs pull --include dMelodies_dataset_latent_info.csv` as labels of the dataset will come in handy. 
-Otherwise, simply `rm data/dmelodies_dataset/dMelodies_dataset_latent_info.csv` (and don't do `git lfs pull`) to delete the placeholder of the lfs-tracked file; the file can be generated later on.
-
-Finally, `source env.sh` to include the necessary paths.
+`source env.sh` to include the necessary paths.
 
 ## Data
 
