@@ -30,20 +30,12 @@ class DMelodies(Dataset):
         assert path_to_data.exists
 
         df = DMelodiesDataset()
-        latent_seq = [None] * df.num_data_points
-        for idx in range(df.num_data_points):
-            latent_array = df._get_latents_array_for_index(idx)
-            latent_seq[idx] = latent_array
-        self.latent_array = np.array(latent_seq)
-        # df.make_or_load_dataset()
-        # self.df = df
-
         audio_path = []
         audio_files = []
         labels = []
         for f in path_to_data.rglob('*.wav'):
             data_idx = int(f.stem.split('_')[0])
-            label_array = self.latent_array[data_idx]
+            label_array = df._get_latents_array_for_index(data_idx)
             if label_array[3] not in R_COND1 or label_array[4] not in R_COND2:
                 continue
                 
@@ -55,9 +47,7 @@ class DMelodies(Dataset):
             audio_files.append(TRANSFORM(audio.unsqueeze(0)).squeeze(0))
 
             instrument_label = DICT_INST_TO_IDX[f.stem.split('-')[-1]]
-            labels.append(
-                np.append(self.latent_array[data_idx], instrument_label)
-            )
+            labels.append(np.append(label_array, instrument_label))
 
         self.audio_files = audio_files
         self.audio_path = audio_path
