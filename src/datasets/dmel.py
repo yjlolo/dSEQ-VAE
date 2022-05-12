@@ -27,7 +27,7 @@ OUTPUT_ACT = nn.Identity()
 class DMelodies(Dataset):
     def __init__(self, path_to_data: str):
         path_to_data = Path(path_to_data)
-        assert path_to_data.exists
+        assert path_to_data.exists(), f"{path_to_data} does not exist!"
 
         df = DMelodiesDataset()
         audio_path = []

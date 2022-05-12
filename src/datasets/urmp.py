@@ -27,7 +27,7 @@ class Urmp(Dataset):
         split: str
     ):
         path_to_data = Path(path_to_data)
-        assert path_to_data.exists
+        assert path_to_data.exists(), f"{path_to_data} does not exist!"
 
         audio_path = []
         audio_files = []
