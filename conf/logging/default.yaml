@@ -19,5 +19,5 @@ media_log:
   audio: True
   reconstruction: True
   generation: True
-  latent_swap: True
+  z_swap: True
   v_project: True

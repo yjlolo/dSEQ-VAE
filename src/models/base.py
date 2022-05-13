@@ -170,9 +170,8 @@ class DsaeBase(pl.LightningModule, ABC):
                 )}, commit=False
         )
     
-    def _log_latent_swapping(
+    def _log_z_swapping(
         self,
-        x: torch.Tensor,
         v: torch.Tensor,
         z: torch.Tensor,
         seq_lengths: torch.Tensor,
@@ -194,38 +193,27 @@ class DsaeBase(pl.LightningModule, ABC):
         source_seq_len = seq_lengths[source_idx:source_idx+1]
         target_seq_len = seq_lengths[target_idx:target_idx+1]
 
-        s = x[source_idx:source_idx+1].to(self.device)
-        t = x[target_idx:target_idx+1].to(self.device)
         s_x = self.decode(source_z, source_v, seq_lengths=source_seq_len)
         t_x = self.decode(target_z, target_v, seq_lengths=target_seq_len)
-        s_z_swap = self.decode(target_z, source_v, seq_lengths=target_seq_len)
-        t_z_swap = self.decode(source_z, target_v, seq_lengths=target_seq_len)
-        s_v_swap = self.decode(source_z, target_v, seq_lengths=source_seq_len)
-        t_v_swap = self.decode(target_z, source_v, seq_lengths=target_seq_len)
+        s_swap = self.decode(target_z, source_v, seq_lengths=target_seq_len)
+        t_swap = self.decode(source_z, target_v, seq_lengths=target_seq_len)
 
         n_subplot = 4
-        _, ax = plt.subplots(2, n_subplot, figsize=(n_subplot * 1.5, 2 * 1.5))
+        _, ax = plt.subplots(1, n_subplot, figsize=(n_subplot, 1))
         d = {
-            'source': [s, (0, 0)],
-            'source_recon': [s_x['mu'], (0, 1)],
-            'source_z_swap': [s_z_swap['mu'], (0, 2)],
-            'source_v_swap': [s_v_swap['mu'], (0, 3)],
-            'target_z_swap': [t_z_swap['mu'], (1, 2)],
-            'target_v_swap': [t_v_swap['mu'], (1, 3)],
-            'target_recon': [t_x['mu'], (1, 1)],
-            'target': [t, (1, 0)],
+            'source': s_x,
+            'source_swap': s_swap,
+            'target_swap': t_swap,
+            'target': t_x
         }
         for i, k in enumerate(d.keys()):
-            pos = d[k][-1]
-            pos_x, pos_y = pos[0], pos[1]
-            data = d[k][0]
-            ax[pos_x][pos_y].imshow(
-                data.squeeze(0).T.cpu().numpy(),
+            ax[i].imshow(
+                d[k]['mu'].squeeze(0).T.cpu().numpy(),
                 aspect='auto', origin='lower'
             )
             if self.hparams.logging.media_log.audio:
-                self._log_audio(k, self._resyn_audio(data), stage)
-        wandb.log({stage + '_latent_swap': plt})
+                self._log_audio(k, self._resyn_audio(d[k]['mu']), stage)
+        wandb.log({stage + '_local_swap': plt})
 
     def _log_reconstruction(
         self,
@@ -401,14 +389,11 @@ class DsaeBase(pl.LightningModule, ABC):
         if self.hparams.logging.media_log.generation or prefix == 'test':
             self._log_generation(1, max_len, prefix)
         
-        if self.hparams.logging.media_log.latent_swap or prefix == 'test':
-            x = pad_batch(outputs, 'input', max_len)
+        if self.hparams.logging.media_log.z_swap or prefix == 'test':
             v = torch.cat([d_i['v'] for d_i in outputs])
             z_pos = pad_batch(outputs, 'z_pos', max_len)
             try:
-                self._log_latent_swapping(
-                    x, v, z_pos, seq_lengths, labels, prefix
-                )
+                self._log_z_swapping(v, z_pos, seq_lengths, labels, prefix)
             except IndexError as e:
                 logger.warning(
                     f"{e}. Local latent swap is not performed. "
