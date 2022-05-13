@@ -139,6 +139,7 @@ outputs/
 multirun/
 results/
 benchmark/
+!scripts/benchmark/
 tmp/
 .venv_torch110
 data/synth_midi.py
