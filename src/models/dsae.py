@@ -253,15 +253,19 @@ class Dsae(DsaeBase):
         if self.z_posterior == '>>':
             assert z is not None
             seq_len = torch.ones(input.size(0), dtype=torch.long)
+            input = torch.cat([input, z], dim=-1)
             if self.v_condition:
                 assert v is not None
-                input = torch.cat([input, z, v], dim=-1).unsqueeze(1)
-            out, h, c = self.net_z_encoder(input, seq_len, h=h, c=c)
+                input = torch.cat([input, v], dim=-1)
+            out, h, c = self.net_z_encoder(
+                input.unsqueeze(1), seq_len, h=h, c=c
+            )
             out = out.squeeze(1)
         elif self.z_posterior == '>':
+            input = torch.cat([input, z], dim=-1)
             if self.v_condition:
                 assert v is not None
-                input = torch.cat([input, z, v], dim=-1)
+                input = torch.cat([input, v], dim=-1)
             out = self.net_z_encoder(input)
         elif self.z_posterior == 'x':
             if self.v_condition:
