@@ -300,8 +300,9 @@ class DsaeBase(pl.LightningModule, ABC):
         max_len = int(max(seq_lengths))
         labels = torch.cat([d_i['ground_truth'][:, -1] for d_i in outputs])
 
-        score, _ = metric.evaluate_latent_swap(
+        lda_score, rpa_score = metric.evaluate_latent_swap(
             model=self,
+            input=torch.cat([d_i['input'] for d_i in outputs]),
             reconstruction=torch.cat(
                 [d_i['reconstruction'] for d_i in outputs]).to(self.device),
             global_latent=torch.cat(
@@ -337,17 +338,21 @@ class DsaeBase(pl.LightningModule, ABC):
                 'v_dim': self.v_dim,
                 'kl_reg': kl_reg
             },
-            'swap_n_clfr': score,
+            'swap_local': {
+                'lda': lda_score,
+                'rpa': rpa_score,
+            },
         }
         print(output_dict)
-        dataset = self.hparams.data.datasets.train._target_.split('.')[-1]
-        orig_cwd = Path(hydra.utils.get_original_cwd())
-        fname = "_".join([f"{k}={v}" for k, v in output_dict['params'].items()])
-        fname = f'{run_id}_{fname}.json'
-        tgt_dir = orig_cwd / 'benchmark' / dataset
-        ensure_dir(tgt_dir)
-        with open(tgt_dir / fname, 'w', encoding='utf-8') as f:
-            json.dump(output_dict, f, ensure_ascii=False, indent=4)
+        if self.hparams.train.save_json:
+            dataset = self.hparams.data.datasets.train._target_.split('.')[-1]
+            orig_cwd = Path(hydra.utils.get_original_cwd())
+            fname = "_".join([f"{k}={v}" for k, v in output_dict['params'].items()])
+            fname = f'{run_id}_{fname}.json'
+            tgt_dir = orig_cwd / 'benchmark' / dataset
+            ensure_dir(tgt_dir)
+            with open(tgt_dir / fname, 'w', encoding='utf-8') as f:
+                json.dump(output_dict, f, ensure_ascii=False, indent=4)
 
     def _run_step(self, batch, prefix):
         input, mask, seq_lengths, labels = batch

@@ -1,12 +1,18 @@
 from typing import Dict
+from tqdm import tqdm
+import hydra
+import numpy as np
 import torch
 import pytorch_lightning as pl
 from sklearn.metrics import f1_score, accuracy_score
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from mir_eval import melody
+from src.models.modules.f0_extract import spec_to_f0
 
 
 def evaluate_latent_swap(
     model: pl.LightningModule,
+    input: torch.Tensor,
     reconstruction: torch.Tensor,
     global_latent: torch.Tensor,
     local_latent: torch.Tensor,
@@ -17,6 +23,7 @@ def evaluate_latent_swap(
 ):
     assert callable(getattr(model, 'infer_v', None))
     assert callable(getattr(model, 'decode', None))
+    assert callable(getattr(model, '_resyn_audio', None))
 
     # Sample those with different global labels
     sampled_idx = torch.empty_like(global_label)
@@ -35,6 +42,7 @@ def evaluate_latent_swap(
     paired_global_label = global_label[sampled_idx]
     paired_mask = mask[sampled_idx]
 
+    hydra.utils.log.info("Evaluating LDA")
     global_scores = {}
     # pre swap
     v_pre_swap = model.infer_v(
@@ -71,9 +79,59 @@ def evaluate_latent_swap(
             y = y.detach().cpu().numpy()
             acc = clfr(x, y)
             global_scores['-'.join([clfr_name, task])] = acc
-    
-    return global_scores, global_scores.keys()
 
+    hydra.utils.log.info("Evaluating RPA")
+    dict_rpa = {}
+    bs = model.hparams.data.batch_size // 2
+    sr = model.audio_synth.SR
+    fn = model._resyn_audio
+    d = model.device
+    hydra.utils.log.info("Resynth audio and extract F0")
+    msg = 'Ground-truth'
+    f0_input, ref_t = batch_f0_extract(input, bs, sr, fn, d, msg)
+    msg = 'Pre-swap'
+    f0_recon, est_t_recon = batch_f0_extract(reconstruction, bs, sr, fn, d, msg)
+    msg = 'Post-gswap'
+    f0_gswap, est_t_gswap = batch_f0_extract(recon_gswap, bs, sr, fn, d, msg)
+    msg = 'Post-lswap'
+    f0_lswap, est_t_lswap = batch_f0_extract(recon_lswap, bs, sr, fn, d, msg)
+    dict_rpa['rpa-pre_swap'] = batch_f0_eval(
+        ref_t, f0_input, est_t_recon, f0_recon
+    )
+    dict_rpa['rpa-post_gswap'] = batch_f0_eval(
+        ref_t, f0_input, est_t_gswap, f0_gswap
+    )
+    dict_rpa['rpa-post_lswap'] = batch_f0_eval(
+        ref_t[sampled_idx], f0_input[sampled_idx], est_t_lswap, f0_lswap
+    )
+    return global_scores, dict_rpa
+
+
+def batch_f0_extract(x, batch_size, sr, audio_syn_func, device, msg=None):
+    list_x = torch.split(x, batch_size, dim=0)
+    list_f0 = []
+    list_t = []
+    for x_i in tqdm(list_x, desc=msg):
+        f0, t = spec_to_f0(x_i, sr, audio_syn_func, device=device)
+        list_f0.append(f0)
+        list_t.append(t)
+    return torch.vstack(list_f0), torch.vstack(list_t)
+
+
+def batch_f0_eval(ref_time, ref_freq, est_time, est_freq):
+    rpa = []
+    for rt, rf, et, ef in zip(ref_time, ref_freq, est_time, est_freq):
+        rpa.append(f0_eval(rt.numpy(), rf.numpy(), et.numpy(), ef.numpy()))
+    return np.mean(rpa)
+
+
+def f0_eval(ref_time, ref_freq, est_time, est_freq):
+    ref_v, ref_c, est_v, est_c = melody.to_cent_voicing(
+        ref_time, ref_freq, est_time, est_freq
+    )
+    rpa = melody.raw_pitch_accuracy(ref_v, ref_c, est_v, est_c)
+    return rpa
+    
 
 class LdaClassifier():
     def __init__(self, X, Y):

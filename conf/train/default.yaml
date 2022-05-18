@@ -1,6 +1,7 @@
 # reproducibility
 deterministic: True
 random_seed: 42
+save_json: True
 
 # training
 pl_trainer:
