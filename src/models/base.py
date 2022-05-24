@@ -320,6 +320,7 @@ class DsaeBase(pl.LightningModule, ABC):
         run_id = best_ckpt.split('/')[-3]
         kl_reg = self.hparams.model.get('reg_weights', None)
         kl_reg = OmegaConf.to_object(kl_reg) if kl_reg is not None else None
+        mask_z = self.hparams.model.get('mask_z', None)
         output_dict = {
             'seed': self.hparams.train.random_seed,
             'ckpt': best_ckpt,
@@ -333,10 +334,12 @@ class DsaeBase(pl.LightningModule, ABC):
                 'data': self.hparams.data.datasets.train.path_to_data.split('/')[-2],
                 'likelihood': self.likelihood,
                 'z_feature': self.z_feature,
+                'z_prior': self.z_prior,
                 'v_condition': self.v_condition,
                 'z_dim': self.z_dim,
                 'v_dim': self.v_dim,
-                'kl_reg': kl_reg
+                'kl_reg': kl_reg,
+                'mask_z': mask_z,
             },
             'swap_local': {
                 'lda': lda_score,
@@ -349,7 +352,7 @@ class DsaeBase(pl.LightningModule, ABC):
             orig_cwd = Path(hydra.utils.get_original_cwd())
             fname = "_".join([f"{k}={v}" for k, v in output_dict['params'].items()])
             fname = f'{run_id}_{fname}.json'
-            tgt_dir = orig_cwd / 'benchmark' / dataset
+            tgt_dir = orig_cwd / 'benchmark' / dataset / self.hparams.tag
             ensure_dir(tgt_dir)
             with open(tgt_dir / fname, 'w', encoding='utf-8') as f:
                 json.dump(output_dict, f, ensure_ascii=False, indent=4)

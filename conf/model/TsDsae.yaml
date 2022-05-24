@@ -13,4 +13,5 @@ transition_dims: [32, 32]
 decoder_dims: [64, 64]
 nonlin: 'tanh'
 C: 300
+mask_z: True
 reg_weights: [1.0, 1.0, 1.0, 1.0]
