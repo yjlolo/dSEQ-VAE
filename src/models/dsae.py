@@ -300,7 +300,7 @@ class Dsae(DsaeBase):
             logvar = self.net_z_prior_logvar(out)
             h = None
             c = None
-        elif self.z_prior == '^':
+        elif self.z_prior == 'x':
             mu = torch.zeros(
                 [input.size(0), input.size(1), self.z_dim],
                 device=self.device
