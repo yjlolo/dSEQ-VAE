@@ -7,7 +7,8 @@ TIMESTAMP_HOP_SIZE = 10  # 10ms
 
 
 def spec_to_f0(spec, sr, synth_audio_func, device):
-    audio = synth_audio_func(spec)
+    audio = torch.from_numpy(synth_audio_func(spec))
+    if audio.dim() == 1: audio = audio.unsqueeze(0)
 
     # https://github.com/neuralaudio/hear-baseline/blob/4e097305378935928fa02094e481823e5b356d60/hearbaseline/torchcrepe.py#L135
     TIMESTAMP_HOP_SIZE_SAMPLES = (sr * TIMESTAMP_HOP_SIZE) // 1000
@@ -17,9 +18,8 @@ def spec_to_f0(spec, sr, synth_audio_func, device):
     assert len(timestamps) == ntimestamps
     timestamps = timestamps.expand((audio.shape[0], timestamps.shape[0]))
 
-    audio = torch.from_numpy(audio)
     pitch, confidence = torchcrepe.predict(
-        audio, sr, device=device, model='tiny', return_periodicity=True
+        audio, sr, device=device, model='full', return_periodicity=True
     )
 
     assert pitch.shape[1] == timestamps.shape[1], \

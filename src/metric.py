@@ -36,12 +36,6 @@ def evaluate_latent_swap(
     sampled_idx = sampled_idx.squeeze(-1)
     assert sum(global_label[sampled_idx] != global_label) == len(global_label)
 
-    paired_global_latent = global_latent[sampled_idx]
-    paired_local_latent = local_latent[sampled_idx]
-    paired_seq_lengths = seq_lengths[sampled_idx]
-    paired_global_label = global_label[sampled_idx]
-    paired_mask = mask[sampled_idx]
-
     hydra.utils.log.info("Evaluating LDA")
     global_scores = {}
     # pre swap
@@ -52,7 +46,9 @@ def evaluate_latent_swap(
     )['v']
     # swap global, decode, and encode
     recon_gswap = model.decode(
-        local_latent, paired_global_latent, seq_lengths=seq_lengths
+        local_latent,
+        global_latent[sampled_idx],
+        seq_lengths=seq_lengths
     )['mu']
     v_gswap = model.infer_v(
         recon_gswap,
@@ -61,18 +57,23 @@ def evaluate_latent_swap(
     )['v']
     # swap local, decode, and encode
     recon_lswap = model.decode(
-        paired_local_latent, global_latent, seq_lengths=paired_seq_lengths
+        local_latent[sampled_idx], 
+        global_latent,
+        seq_lengths=seq_lengths[sampled_idx]
     )['mu']
     v_lswap = model.infer_v(
         recon_lswap,
         deterministic=True,
-        seq_lengths=paired_seq_lengths, mask=paired_mask
+        seq_lengths=seq_lengths[sampled_idx], mask=mask[sampled_idx]
     )['v']
     data = {
         'pre_swap': (v_pre_swap, global_label),
-        'gswap': (v_gswap, paired_global_label),
+        'gswap': (v_gswap, global_label[sampled_idx]),
         'lswap': (v_lswap, global_label),
     }
+    reconstruction = reconstruction.cpu()
+    recon_lswap = recon_lswap.cpu().detach()
+    recon_gswap = recon_gswap.cpu().detach()
     for clfr_name, clfr in dict_clfr.items():
         for task, (x, y) in data.items():
             x = x.detach().cpu().numpy()
@@ -80,15 +81,21 @@ def evaluate_latent_swap(
             acc = clfr(x, y)
             global_scores['-'.join([clfr_name, task])] = acc
 
+    if not model.hparams.train.crepe_eval:
+        return global_scores, None
+
     hydra.utils.log.info("Evaluating RPA")
     dict_rpa = {}
-    bs = model.hparams.data.batch_size // 2
+    bs = max(model.hparams.data.batch_size // 32, 1)
     sr = model.audio_synth.SR
     fn = model._resyn_audio
     d = model.device
     hydra.utils.log.info("Resynth audio and extract F0")
     msg = 'Ground-truth'
     f0_input, ref_t = batch_f0_extract(input, bs, sr, fn, d, msg)
+    n_unpitched = torch.sum(torch.all(torch.isnan(f0_input), dim=1))
+    if n_unpitched != 0:
+        hydra.utils.log.warning(f"There is {n_unpitched} unpitched input seqs.")
     msg = 'Pre-swap'
     f0_recon, est_t_recon = batch_f0_extract(reconstruction, bs, sr, fn, d, msg)
     msg = 'Post-gswap'
@@ -111,7 +118,7 @@ def batch_f0_extract(x, batch_size, sr, audio_syn_func, device, msg=None):
     list_x = torch.split(x, batch_size, dim=0)
     list_f0 = []
     list_t = []
-    for x_i in tqdm(list_x, desc=msg):
+    for _, x_i in tqdm(enumerate(list_x), desc=msg):
         f0, t = spec_to_f0(x_i, sr, audio_syn_func, device=device)
         list_f0.append(f0)
         list_t.append(t)

@@ -20,3 +20,5 @@ early_stopping:
 
 model_checkpoints:
   verbose: True
+
+crepe_eval: True

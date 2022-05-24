@@ -1,8 +1,10 @@
 import os
+import sys
 from pathlib import Path
 from typing import List
 
 import hydra
+import torch
 import pytorch_lightning as pl
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig, OmegaConf
@@ -13,9 +15,11 @@ from pytorch_lightning.callbacks import (
     TQDMProgressBar,
 )
 from pytorch_lightning.loggers import WandbLogger
+import torchcrepe
 from src.utils.util import log_hyperparameters
 
 
+sys.path.insert(0, 'data/dmelodies_dataset')
 os.environ["WANDB_START_METHOD"] = "thread"
 
 
@@ -86,6 +90,7 @@ def run(cfg: DictConfig) -> None:
     hydra.utils.log.info(f"Instantiating <{cfg.model._target_}>")
     model: pl.LightningModule = hydra.utils.instantiate(
         cfg.model,
+        tag=cfg.core.tags,
         optim=cfg.optim,
         logging=cfg.logging,
         data=cfg.data,
@@ -93,6 +98,9 @@ def run(cfg: DictConfig) -> None:
         train=cfg.train,
         _recursive_=False
     )
+    if cfg.train.crepe_eval:
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        torchcrepe.load.model(device, capacity='full')
 
     # Instantiate the callbacks
     callbacks: List[Callback] = build_callbacks(cfg=cfg)

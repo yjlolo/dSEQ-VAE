@@ -1,6 +1,6 @@
 core:
   tags:
-    - mytag
+    - my_run
 defaults:
   - _self_
   - data: dmel_inst
